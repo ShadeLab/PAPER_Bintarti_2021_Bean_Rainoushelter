@@ -301,6 +301,11 @@ qiime taxa filter-seqs \
 ### output ###
 ZOTUtable-no-mitoch-no-chloro.qza
 rep-seqs-no-mitoch-no-chloro.qza
+
+## create visualization files
+
+qiime feature-table summarize --i-table q2/ZOTUtable-no-mitoch-no-chloro.qza --o-visualization q2/ZOTUtable-no-mitoch-no-chloro.qzv
+qiime feature-table tabulate-seqs --i-data q2/rep-seqs-no-mitoch-no-chloro.qza --o-visualization q2/rep-seqs-no-mitoch-no-chloro.qzv
 ```
 
 ## 7) Align the representative sequences and construct a phylogenetic tree from the alignment using MAFFT (Multiple Alignment using Fast Fourier Transform)
@@ -319,9 +324,47 @@ unrooted-tree.qza
 rooted-tree.qza
 ```
 
+## 8) Export table to biom
+
+```
+mkdir export_file
+
+cp ZOTU_table.qza export_file/
+cp taxonomy.qza export_file/ 
+
+qiime tools export \
+    --input-path ZOTU_table.qza \
+    --output-path Biom/
+
+mv feature-table.biom ZOTU_table.biom
+
+qiime tools export \
+    --input-path ZOTUtable-no-mitoch-no-chloro.qza \
+    --output-path Biom/
+
+mv feature-table.biom ZOTUtable-no-mitoch-no-chloro.biom
+
+biom convert -i Biom/ZOTU_table.biom -o Biom/ZOTU_table.tsv --to-tsv
+biom convert -i Biom/ZOTUtable-no-mitoch-no-chloro.biom -o Biom/ZOTUtable-no-mitoch-no-chloro.tsv --to-tsv
 
 
+qiime tools export --input-path taxonomy.qza --output-path exported_tax
 
+cp exported_tax/taxonomy.tsv biom-taxonomy.tsv
+```
+
+## 9) Add taxonomy to the ZOTU table
+```
+biom add-metadata -i Biom/ZOTU_table.biom -o ZOTU_table_tax.biom --observation-metadata-fp biom-taxonomy.tsv --sc-separated taxonomy
+
+biom add-metadata -i Biom/ZOTU_table.biom -o ZOTU_table_tax.biom --observation-metadata-fp=biom-taxonomy.tsv --sc-separated=taxonomy --observation-header=OTUID,taxonomy,confidence
+
+
+biom add-metadata -i Biom/ZOTUtable-no-mitoch-no-chloro.biom -o ZOTUtable-no-mitoch-no-chloro_tax.biom --observation-metadata-fp biom-taxonomy.tsv --sc-separated taxonomy
+
+biom convert -i ZOTU_table_tax.biom -o TSV/ZOTU_table_tax.tsv --header-key taxonomy --to-tsv
+biom convert -i ZOTUtable-no-mitoch-no-chloro_tax.biom -o TSV/ZOTUtable-no-mitoch-no-chloro_tax.tsv --header-key taxonomy --to-tsv
+```
 
 
 
