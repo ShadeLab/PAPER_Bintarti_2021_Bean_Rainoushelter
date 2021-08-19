@@ -287,7 +287,7 @@ taxonomy.qzv
 qiime taxa filter-table \
   --i-table ZOTU_table.qza \
   --i-taxonomy taxonomy.qza \
-  --p-exclude mitochondria,chloroplast \
+  --p-exclude mitochondria,chloroplast,magnoliophyta \
   --o-filtered-table ZOTUtable-no-mitoch-no-chloro.qza
 
 # from rep sequences
@@ -295,7 +295,7 @@ qiime taxa filter-table \
 qiime taxa filter-seqs \
   --i-sequences rep-seqs.qza \
   --i-taxonomy taxonomy.qza \
-  --p-exclude mitochondria,chloroplast \
+  --p-exclude mitochondria,chloroplast,magnoliophyta \
   --o-filtered-sequences rep-seqs-no-mitoch-no-chloro.qza
 
 ### output ###
@@ -346,7 +346,6 @@ mv feature-table.biom ZOTUtable-no-mitoch-no-chloro.biom
 
 biom convert -i Biom/ZOTU_table.biom -o Biom/ZOTU_table.tsv --to-tsv
 biom convert -i Biom/ZOTUtable-no-mitoch-no-chloro.biom -o Biom/ZOTUtable-no-mitoch-no-chloro.tsv --to-tsv
-
 
 qiime tools export --input-path taxonomy.qza --output-path exported_tax
 
