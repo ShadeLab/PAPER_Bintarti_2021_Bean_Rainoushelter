@@ -1,7 +1,7 @@
 # Raw Sequences Analysis of V4 region of 16S rRNA  gene from common bean seed under rainoutshelter treatment (field experiment at MSU Agraonomy & UPRECH Farms)
 
 ## Analysis of 16S Miseq Data
-Here we used the USEARCH pipeline (v10.0.240_i86linux64) for pre-processing raw sequences data and UPARSE method for OTU clustering (Edgar 2013). Additional analyses were conducted using QIIME1
+Here we used the DADA2 denoising pipeline for pre-processing raw sequences data and UPARSE method for OTU clustering (Edgar 2013). Additional analyses were conducted using QIIME2 (qiime2-2021.4).
 
 raw sequence data stored on HPCC:
 /mnt/research/ShadeLab/Sequence/raw_sequence/Bean_rainoutshelter/
@@ -102,6 +102,7 @@ qiime tools import \
 --input-format PairedEndFastqManifestPhred33V2
 
 ## create a visualization file from 'paired-end-demux.qza' (optional)
+
 qiime demux summarize \
 --i-data q2/paired-end-demux.qza \
 --o-visualization q2/demux.qzv
@@ -113,7 +114,7 @@ qiime demux summarize \
 
 ##run the figaro activation and tutorial from John Quensen's website (http://john-quensen.com/tutorials/figaro/) and the reference can be found here: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7424690/
 
-## deactivate qiime2 before use figaro because figaro need miniconda3, while qiime2 environment need anaconda2
+######## deactivate qiime2 before use figaro because figaro need miniconda3, while qiime2 environment need anaconda2 #############
 conda deactivate
 
 ## activate figaro
@@ -184,14 +185,22 @@ qiime dada2 denoise-paired \
 --o-denoising-stats q2/denoising-stats.qza \
 --p-n-threads 10
 
-## create visualization files
+## create visualization files:
+
 qiime metadata tabulate --m-input-file q2/denoising-stats.qza --o-visualization q2/denoising-stats.qzv
+
 qiime feature-table summarize --i-table q2/table.qza --o-visualization q2/table.qzv
+
 qiime feature-table tabulate-seqs --i-data q2/rep-seqs.qza --o-visualization q2/rep-seqs.qzv
 ```
 
-## 5) Assign taxonomy using pre-trained (515F-806R) SILVA 138 reference database downloaded from Qiime2 website: https://docs.qiime2.org/2021.4/data-resources/. Reference: Bokulich et al. 2018 (https://doi.org/10.1186/s40168-018-0470-z, http://doi.org/10.5281/zenodo.3891931). Classify-sklearn is a machine learning based classification method with a Naive Bayes classifier.
+## 5) Assign taxonomy using pre-trained (515F-806R) SILVA 138 reference database downloaded from the QIIME2 website: https://docs.qiime2.org/2021.4/data-resources/. Reference: Bokulich et al. 2018 (https://doi.org/10.1186/s40168-018-0470-z, http://doi.org/10.5281/zenodo.3891931). Classify-sklearn is a machine learning based classification method with a Naive Bayes classifier.
 ```
+##  Download this file from the QIIME2 website:
+Silva 138 99% OTUs from 515F/806R region of sequences (MD5: e05afad0fe87542704be96ff483824d4)
+## You also can submit it as a job on the MSU HPCC because it may take a while to run
+
+
 #### Sequencing Run 1 ####
 
 qiime feature-classifier classify-sklearn \
@@ -229,7 +238,7 @@ taxonomy.qza
 taxonomy.qzv
 ```
 
-## 6) Filter non-bacteria/archaea from tables and sequences
+## 6) Filter non-bacteria/archcd from tables and sequences
 ```
 #### Sequencing Run 1 ####
 
@@ -267,7 +276,7 @@ qiime feature-table tabulate-seqs --i-data q2/rep-seqs-no-mitoch-no-chloro.qza -
 qiime taxa filter-table \
   --i-table q2/table.qza \
   --i-taxonomy q2/taxonomy.qza \
-  --p-exclude mitochondria,chloroplast \
+  --p-exclude mitochondria,chloroplast,unassigned \
   --o-filtered-table q2/ASVtable-no-mitoch-no-chloro.qza
 
 # from rep sequences
@@ -275,7 +284,7 @@ qiime taxa filter-table \
 qiime taxa filter-seqs \
   --i-sequences q2/rep-seqs.qza \
   --i-taxonomy q2/taxonomy.qza \
-  --p-exclude mitochondria,chloroplast \
+  --p-exclude mitochondria,chloroplast,unassigned \
   --o-filtered-sequences q2/rep-seqs-no-mitoch-no-chloro.qza
 
 ### output ###
@@ -285,6 +294,7 @@ rep-seqs-no-mitoch-no-chloro.qza
 ## create visualization files
 
 qiime feature-table summarize --i-table q2/ASVtable-no-mitoch-no-chloro.qza --o-visualization q2/ASVtable-no-mitoch-no-chloro.qzv
+
 qiime feature-table tabulate-seqs --i-data q2/rep-seqs-no-mitoch-no-chloro.qza --o-visualization q2/rep-seqs-no-mitoch-no-chloro.qzv
 ```
 
@@ -322,7 +332,45 @@ masked-aligned-rep-seqs-no-mitoch-no-chloro.qza
 unrooted-tree.qza
 rooted-tree.qza
 ```
+## 8) Export table to biom
+```
+mkdir export_file
 
+cp table.qza export_file/
+cp ASVtable-no-mitoch-no-chloro.qza export_file/
+cp taxonomy.qza export_file/ 
+
+qiime tools export \
+    --input-path export_file/table.qza \
+    --output-path Biom/
+
+mv Biom/feature-table.biom Biom/ASVtable_unfiltered.biom
+
+qiime tools export \
+    --input-path export_file/ASVtable-no-mitoch-no-chloro.qza \
+    --output-path Biom/
+
+mv Biom/feature-table.biom Biom/ASVtable-no-mitoch-no-chloro.biom
+
+biom convert -i Biom/ASVtable_unfiltered.biom -o Biom/ASVtable_unfiltered.tsv --to-tsv
+
+biom convert -i Biom/ASVtable-no-mitoch-no-chloro.biom -o Biom/ASVtable-no-mitoch-no-chloro.tsv --to-tsv
+
+qiime tools export --input-path export_file/taxonomy.qza --output-path exported_tax
+
+cp exported_tax/taxonomy.tsv Biom/biom-taxonomy.tsv
+```
+
+## 9) Add taxonomy to the ASV table
+```
+biom add-metadata -i Biom/ASVtable_unfiltered.biom -o Biom/ASVtable_unfiltered_tax.biom --observation-metadata-fp=Biom/biom-taxonomy.tsv --sc-separated=taxonomy --observation-header=OTUID,taxonomy,confidence
+
+biom add-metadata -i Biom/ASVtable-no-mitoch-no-chloro.biom -o Biom/ASVtable-no-mitoch-no-chloro_tax.biom --observation-metadata-fp=Biom/biom-taxonomy.tsv --sc-separated=taxonomy --observation-header=OTUID,taxonomy,confidence
+
+biom convert -i Biom/ASVtable_unfiltered_tax.biom -o TSV/ASVtable_unfiltered_tax.tsv --header-key taxonomy --to-tsv
+
+biom convert -i Biom/ASVtable-no-mitoch-no-chloro_tax.biom -o TSV/ASVtable-no-mitoch-no-chloro_tax.tsv --header-key taxonomy --to-tsv
+```
 
 
 

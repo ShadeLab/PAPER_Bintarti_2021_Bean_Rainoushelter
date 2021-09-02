@@ -1,0 +1,27 @@
+,OTUID,Occ.unfil,relabund.unfil,meanRelAbund,Domain,Phylum,Class,Order,Family,Genus,Species,OTUID.genus,Genus.ed,Family.ed
+152,GAOK01049512.6271.8188,1,50.2535834,0.628169793,Bacteria,Cyanobacteria,Oxyphotobacteria,Chloroplast,Cercis gigantea,Cercis gigantea,Cercis gigantea,GAOK01049512.6271.8188 (Chloroplast),Chloroplast,Chloroplast
+317,MAMN01000047.249174.251307,1,12.88484753,0.161060594,Bacteria,Proteobacteria,Alphaproteobacteria,Rickettsiales,Mitochondria,NA,NA,MAMN01000047.249174.251307 (Mitochondria),Mitochondria,Mitochondria
+53,CCPS01000022.154.1916,0.9625,3.051302609,0.038141283,Bacteria,Proteobacteria,Gammaproteobacteria,Enterobacteriales,Enterobacteriaceae,Escherichia-Shigella,Escherichia coli,CCPS01000022.154.1916 (Escherichia-Shigella),Escherichia-Shigella,Enterobacteriaceae
+158,GDAX01048398.486.2474,0.9625,0.784846652,0.009810583,Bacteria,Cyanobacteria,Oxyphotobacteria,Chloroplast,NA,NA,NA,GDAX01048398.486.2474 (Chloroplast),Chloroplast,Chloroplast
+228,JOGX01000016.105867.107365,0.9375,3.306323449,0.041329043,Bacteria,Actinobacteria,Actinobacteria,Streptomycetales,Streptomycetaceae,Streptomyces,NA,JOGX01000016.105867.107365 (Streptomyces),Streptomyces,Streptomycetaceae
+155,GCVR01032299.115.1608,0.925,0.229091422,0.002863643,Bacteria,Cyanobacteria,Oxyphotobacteria,Chloroplast,NA,NA,NA,GCVR01032299.115.1608 (Chloroplast),Chloroplast,Chloroplast
+193,HO793511.1.1233,0.925,0.421697062,0.005271213,Bacteria,Cyanobacteria,Oxyphotobacteria,Chloroplast,NA,NA,NA,HO793511.1.1233 (Chloroplast),Chloroplast,Chloroplast
+48,BABK02029359.1608.3968,0.9,0.645716347,0.008071454,Bacteria,Proteobacteria,Alphaproteobacteria,Rickettsiales,Mitochondria,NA,NA,BABK02029359.1608.3968 (Mitochondria),Mitochondria,Mitochondria
+73,DQ629536.1.1284,0.8625,0.060895766,0.000761197,Bacteria,Cyanobacteria,Oxyphotobacteria,Chloroplast,NA,NA,NA,DQ629536.1.1284 (Chloroplast),Chloroplast,Chloroplast
+156,GDAH01000844.40.1969,0.8625,0.32212845,0.004026606,Bacteria,Proteobacteria,Alphaproteobacteria,Rickettsiales,Mitochondria,NA,NA,GDAH01000844.40.1969 (Mitochondria),Mitochondria,Mitochondria
+308,LN885259.156216.157719,0.8375,0.040132033,0.00050165,Bacteria,Cyanobacteria,Oxyphotobacteria,Chloroplast,NA,NA,NA,LN885259.156216.157719 (Chloroplast),Chloroplast,Chloroplast
+159,GEFP01046751.99.1466,0.8125,0.011056034,0.0001382,Bacteria,Proteobacteria,Alphaproteobacteria,Rickettsiales,Mitochondria,Arachis hypogaea (peanut),Arachis hypogaea (peanut),GEFP01046751.99.1466 (Mitochondria),Mitochondria,Mitochondria
+157,GDAH01000892.378.1918,0.8,0.004561733,5.70E-05,Bacteria,Proteobacteria,Alphaproteobacteria,Rickettsiales,Mitochondria,NA,NA,GDAH01000892.378.1918 (Mitochondria),Mitochondria,Mitochondria
+160,GEUY01004424.1.1233,0.8,0.005832074,7.29E-05,Bacteria,Cyanobacteria,Oxyphotobacteria,Chloroplast,NA,NA,NA,GEUY01004424.1.1233 (Chloroplast),Chloroplast,Chloroplast
+200,HQ183518.1.1491,0.8,0.003752968,4.69E-05,Bacteria,Cyanobacteria,Oxyphotobacteria,Chloroplast,NA,NA,NA,HQ183518.1.1491 (Chloroplast),Chloroplast,Chloroplast
+233,JR951091.270.2233,0.8,0.00987245,0.000123406,Bacteria,Proteobacteria,Alphaproteobacteria,Rickettsiales,Mitochondria,NA,NA,JR951091.270.2233 (Mitochondria),Mitochondria,Mitochondria
+319,MJEQ01037191.43866869.43868322,0.8,0.01004975,0.000125622,Bacteria,Cyanobacteria,Oxyphotobacteria,Chloroplast,Nicotiana attenuata,Nicotiana attenuata,Nicotiana attenuata,MJEQ01037191.43866869.43868322 (Chloroplast),Chloroplast,Chloroplast
+238,KA250240.138.1720,0.75,0.00446062,5.58E-05,Bacteria,Proteobacteria,Alphaproteobacteria,Rickettsiales,Mitochondria,NA,NA,KA250240.138.1720 (Mitochondria),Mitochondria,Mitochondria
+37,AY357215.644.2502,0.725,0.002254536,2.82E-05,Bacteria,Proteobacteria,Alphaproteobacteria,Rickettsiales,Mitochondria,NA,NA,AY357215.644.2502 (Mitochondria),Mitochondria,Mitochondria
+257,KF625186.1.1741,0.725,0.676900724,0.008461259,Bacteria,Proteobacteria,Gammaproteobacteria,Enterobacteriales,Enterobacteriaceae,Raoultella,Raoultella ornithinolytica,KF625186.1.1741 (Raoultella),Raoultella,Enterobacteriaceae
+292,KY646001.1.1573,0.7,1.682707484,0.021033844,Bacteria,Firmicutes,Bacilli,Bacillales,Bacillaceae,Bacillus,NA,KY646001.1.1573 (Bacillus),Bacillus,Bacillaceae
+24,AMWY02006532.103.2040,0.675,0.001584689,1.98E-05,Bacteria,Proteobacteria,Alphaproteobacteria,Rickettsiales,Mitochondria,NA,NA,AMWY02006532.103.2040 (Mitochondria),Mitochondria,Mitochondria
+59,CP018779.372609.374112,0.675,0.995426934,0.012442837,Bacteria,Proteobacteria,Alphaproteobacteria,Rhizobiales,Rhizobiaceae,Ochrobactrum,NA,CP018779.372609.374112 (Ochrobactrum),Ochrobactrum,Rhizobiaceae
+259,KF843326.1.1368,0.6125,0.023248206,0.000290603,Bacteria,Cyanobacteria,Oxyphotobacteria,Chloroplast,uncultured bacterium,uncultured bacterium,uncultured bacterium,KF843326.1.1368 (Chloroplast),Chloroplast,Chloroplast
+83,EF528273.1.1512,0.525,0.648832318,0.008110404,Bacteria,Firmicutes,Bacilli,Bacillales,Bacillaceae,Bacillus,NA,EF528273.1.1512 (Bacillus),Bacillus,Bacillaceae
+79,EF101305.1.1542,0.5125,0.808678004,0.010108475,Bacteria,Proteobacteria,Gammaproteobacteria,Pseudomonadales,Pseudomonadaceae,Pseudomonas,NA,EF101305.1.1542 (Pseudomonas),Pseudomonas,Pseudomonadaceae

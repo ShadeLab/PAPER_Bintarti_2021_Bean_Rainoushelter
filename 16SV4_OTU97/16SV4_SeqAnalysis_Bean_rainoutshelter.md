@@ -74,15 +74,15 @@ Totals:
 
 #### for r2: ####
 
-09:46 701Mb   100.0% 91.5% merged
+100.0% 91.5% merged
 Totals:
-   7240182  Pairs (7.2M)
-   6625368  Merged (6.6M, 91.51%)
-   4696419  Alignments with zero diffs (64.87%)
-    600148  Too many diffs (> 10) (8.29%)
+   7240310  Pairs (7.2M)
+   6625415  Merged (6.6M, 91.51%)
+   4696431  Alignments with zero diffs (64.87%)
+    600226  Too many diffs (> 10) (8.29%)
          0  Fwd tails Q <= 2 trimmed (0.00%)
          5  Rev tails Q <= 2 trimmed (0.00%)
-     14666  No alignment found (0.20%)
+     14669  No alignment found (0.20%)
          0  Alignment too short (< 16) (0.00%)
          0  Exp.errs. too high (max=1.0) (0.00%)
       4325  Staggered pairs (0.06%) merged & trimmed
@@ -117,15 +117,15 @@ Length         MaxEE 0.50         MaxEE 1.00         MaxEE 2.00
 
 #### for r2: ####
 
-6625368 reads, max len 480, avg 252.6
+6625415 reads, max len 480, avg 252.6
 
 Length         MaxEE 0.50         MaxEE 1.00         MaxEE 2.00
 ------   ----------------   ----------------   ----------------
-    50    6599866( 99.6%)    6623869(100.0%)    6625173(100.0%)
-   100    6568195( 99.1%)    6619644( 99.9%)    6624956(100.0%)
-   150    6529400( 98.6%)    6611081( 99.8%)    6624095(100.0%)
-   200    6499366( 98.1%)    6604114( 99.7%)    6623503(100.0%)
-   250    6457336( 97.5%)    6587906( 99.4%)    6618743( 99.9%)
+    50    6599912( 99.6%)    6623916(100.0%)    6625220(100.0%)
+   100    6568239( 99.1%)    6619691( 99.9%)    6625003(100.0%)
+   150    6529442( 98.6%)    6611125( 99.8%)    6624142(100.0%)
+   200    6499405( 98.1%)    6604157( 99.7%)    6623549(100.0%)
+   250    6457371( 97.5%)    6587949( 99.4%)    6618788( 99.9%)
    300        220(  0.0%)        373(  0.0%)        541(  0.0%)
    350        165(  0.0%)        316(  0.0%)        456(  0.0%)
    400        149(  0.0%)        279(  0.0%)        399(  0.0%)
@@ -146,11 +146,11 @@ Length         MaxEE 0.50         MaxEE 1.00         MaxEE 2.00
 
 #### for r2: ####
 
-03:11 627Mb   100.0% Filtering, 99.4% passed
-   6625368  Reads (6.6M)                    
+00:39 627Mb   100.0% Filtering, 99.4% passed 
+   6625415  Reads (6.6M)                    
       3562  Discarded reads length < 250
-     33900  Discarded reads with expected errs > 1.00
-   6587906  Filtered reads (6.6M, 99.4%)
+     33904  Discarded reads with expected errs > 1.00
+   6587949  Filtered reads (6.6M, 99.4%)
 ```
 ## 4) Dereplicate Sequences
 ```
@@ -164,8 +164,9 @@ Length         MaxEE 0.50         MaxEE 1.00         MaxEE 2.00
 
 #### for r2: ####
 
-6587906 seqs, 244200 uniques, 136716 singletons (56.0%)
-Min size 1, median 1, max 3081804, avg 26.98
+6587949 seqs, 244204 uniques, 136720 singletons (56.0%)
+00:24 5.8Gb  Min size 1, median 1, max 3081818, avg 26.98
+00:30 5.4Gb   100.0% Writing uniques_filtered_merged.fastq
 
 ```
 ## 5) Remove Singeltons 
@@ -178,7 +179,6 @@ Min size 1, median 1, max 3081804, avg 26.98
 Sorting 127936 sequences
 
 #### for r2: ####
-
 Sorting 107484 sequences
 ```
 
@@ -200,7 +200,15 @@ Throughput  32.0k seqs/sec.
 
 
 #### for r2: ####
-
+Seqs  107484 (107.5k)
+  Clusters  2052
+  Max size  4542110 (4.5M)
+  Avg size  3143.9
+  Min size  2
+Singletons  0, 0.0% of seqs, 0.0% of clusters
+   Max mem  726Mb
+      Time  3.00s
+Throughput  35.8k seqs/sec.
 
 ```
 
@@ -210,6 +218,12 @@ Throughput  32.0k seqs/sec.
 
 ### output ###
 100.0% Searching, 40.2% matched
+
+#### for r2: ####
+100.0% Searching, 41.0% matched
+
+
+note: 
 
 Closed reference OTU picking:
 Pick OTUs based on the Silva database in the home directory.
@@ -227,9 +241,8 @@ Produce some output files - ref_seqs.uc (pre-clustered), SILVA97_closed_referenc
 ### output ###
 100.0% 122 OTUs, 450 chimeras
 
-
-
-
+## for r2 ##
+100.0% 111 OTUs, 403 chimeras
 ```
 
 ## 9) Combine the Rep Sets Between De novo and SILVA Reference-based OTU Picking
@@ -245,6 +258,10 @@ cat SILVA97_closed_reference.fasta denovo_otus.fasta > FULL_REP_SET.fna
 8193798 / 8220965 mapped to OTUs (99.7%)
 OTU_table.txt
 OTU_jsn.biom
+
+##  for r2 ##
+100.0% Searching merged.fq, 99.7% matched
+6602580 / 6625415 mapped to OTUs (99.7%) 
 ```
 
 # Part II: Switch to QIIME 1.9.1
@@ -302,7 +319,7 @@ OTU_table_tax.biom
 ```
 ## 6) Filter non-bacteria/archaea
 ```
-filter_taxa_from_otu_table.py -i OTU_table_tax.biom -o OTU_table_tax_filt.biom -n D_4__Mitochondria,D_3__Chloroplast,Chlorophyta,Unassigned
+filter_taxa_from_otu_table.py -i OTU_table_tax.biom -o OTU_table_tax_filt.biom -n D_1__Cyanobacteria,D_4__Mitochondria,D_3__Chloroplast,Chlorophyta,Unassigned
 
 #remove same Mito and Chloro sequences from RepSeqs file
 filter_fasta.py -f FULL_REP_SET_filteredfailedalignments.fa -o FULL_REP_SET_filteredfailedalignments_rmCM.fa -b OTU_table_tax_filt.biom 
