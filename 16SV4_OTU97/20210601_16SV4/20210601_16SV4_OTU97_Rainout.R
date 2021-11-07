@@ -71,7 +71,7 @@ wd <- print(getwd())
 
 # READ PROPORTION OF CHLOROPLAST AND MITOCHONDRIA
 
-#read the unfiltered zotu table 
+#read the unfiltered otu table 
 otu.unfil <- read.table(file = 'OTU_table_tax.txt', sep = '\t', header = TRUE,check.names = FALSE)
 otu.unfil
 tax.unfil <- otu.unfil[,'taxonomy']
@@ -1086,11 +1086,251 @@ dim(unique.nc.unfil.tax)
 setwd('/Users/arifinabintarti/Documents/PAPER/PAPER_Bintarti_2021_Bean_Rainoutshelter/16SV4_OTU97/20210601_16SV4')
 write.csv(unique.nc.unfil.tax, file = "unique.nc.unfil.tax.csv")
 
+##### chloroplast sequences distribution ######
+
+# 20210601_16SV4_OTU97
+
+# load unfiltered otu and tax table
+otu.tax.unfiltered
+colnames(otu.tax.unfiltered)
+# select otu chloroplast and mitochondria
+otu.tax.chlo <- otu.tax.unfiltered %>%
+    filter(Order == "Chloroplast")
+          
+dim(otu.tax.chlo)                            
+head(otu.tax.chlo)
+tail(otu.tax.chlo)
+colnames(otu.tax.chlo)
+# otu table chloroplast
+otu.chlo <- otu.tax.chlo[1:80]
+head(otu.chlo)
+dim(otu.chlo)
+# taxonomy table chloroplast
+tax.chlo <- otu.tax.chlo[,c(1,81:89)]
+head(tax.chlo)
+# occupancy
+otu.chlo <- column_to_rownames(otu.chlo, var = "OTUID")
+otu.chlo.PA <- 1*((otu.chlo>0)==1)
+sum(otu.chlo.PA)
+otu.chlo.PA <- otu.chlo.PA[rowSums(otu.chlo.PA)>0,]
+occ.chlo <- rowSums(otu.chlo.PA)/ncol(otu.chlo.PA)
+df.occ.chlo <- as.data.frame(occ.chlo)
+df.occ.chlo <- rownames_to_column(df.occ.chlo, var = "OTUID")
+dim(df.occ.chlo)
+# rel. abund.
+otu.rel.chlo <- decostand(otu.chlo, method="total", MARGIN=2)
+com_abund.chlo <- rowSums(otu.rel.chlo)
+df.com_abund.chlo <- as.data.frame(com_abund.chlo)
+head(df.com_abund.chlo)
+dim(df.com_abund.chlo)
+df.com_abund.chlo$relabund <- df.com_abund.chlo$com_abund.chlo/79
+sum(df.com_abund.chlo$com_abund.chlo)
+sum(df.com_abund.chlo$relabund)
+df.com_abund.chlo$percentrelabund=df.com_abund.chlo$relabund*100
+sum(df.com_abund.chlo$percentrelabund)
+df.com_abund.chlo <- rownames_to_column(df.com_abund.chlo, var = "OTUID")
+head(df.com_abund.chlo)
+dim(df.com_abund.chlo) ### all OTU with CumulativeRelAbund, percent CumulativeRelAbund!!!!!!!!!!!
+# merge occupancy table and mean relative abundance table
+df.occ.ra.chlo <- merge(df.occ.chlo, df.com_abund.chlo, by.x =c("OTUID"), by.y = c("OTUID"))
+# merge the occupancy and relabund tabel with the taxonomy
+df.occ.ra.chlo.tax <- merge(df.occ.ra.chlo, tax.chlo, by="OTUID")
+# re-order 
+sort.occ.ra.chlo.tax <- df.occ.ra.chlo.tax[order(df.occ.ra.chlo.tax$relabund, decreasing = TRUE),]
+setwd('/Users/arifinabintarti/Documents/PAPER/PAPER_Bintarti_2021_Bean_Rainoutshelter/16SV4_OTU97/20210601_16SV4')
+#write.csv(sort.occ.ra.chlo.tax, file = "sort.occ.ra.chlo.tax.csv")
+sort.occ.ra.chlo.tax.ed <- read.csv("sort.occ.ra.chlo.tax.ed.csv")
+
+# plot ra
+library(forcats)
+library(dplyr)
+library(pals)
+
+set.seed(13)
+plot.ra.chlo <- ggplot(sort.occ.ra.chlo.tax.ed,aes(x=fct_reorder(OTUID.ed, percentrelabund, .desc=T), y=percentrelabund, fill=OTUID))+
+ geom_bar(aes(), stat="identity")+
+ coord_flip()+
+ scale_fill_manual(values=as.vector(stepped(n=24))) +
+ labs(y= "Relative Abundance (%)", x="OTU ID")+
+ theme_bw()+
+ scale_y_continuous(expand = expansion(mult = c(0.01, .1)))+
+ theme(axis.text=element_text(size=12), 
+       axis.title.y = element_blank(),
+       axis.title.x=element_text(size=14),
+       panel.grid.major = element_blank(),
+       panel.grid.minor = element_blank(),
+       legend.position = "none",
+       panel.background = element_blank(),
+       panel.grid = element_blank(),
+       panel.border = element_blank(),
+       axis.line.x = element_line(colour = "black"),
+       axis.line.y = element_line(colour = "black"),
+       plot.margin = unit(c(0.2,0.2,0.2,0.2), "lines"))
+
+plot.ra.chlo
+
+# plot occ
+set.seed(13)
+plot.occ.chlo <- ggplot(sort.occ.ra.chlo.tax.ed,aes(x=fct_reorder(OTUID.ed, occ.chlo, .desc=T), y=occ.chlo, fill=OTUID))+
+ geom_bar(aes(), stat="identity")+
+ #coord_flip()+
+ scale_fill_manual(values=as.vector(stepped(n=24))) +
+ labs(title="A. Chloroplast",y= "Occupancy", x="OTU ID")+
+ theme_bw()+
+ scale_y_continuous(expand = expansion(mult = c(0.01, .1)))+
+ coord_flip()+
+ theme(plot.title = element_text(size=15, face = "bold"),
+       axis.text=element_text(size=12, hjust = 0.5), 
+       axis.title=element_text(size=14),
+       panel.grid.major = element_blank(),
+       panel.grid.minor = element_blank(),
+       #legend.position = "right",
+       legend.position = "none",
+       panel.background = element_blank(),
+       panel.grid = element_blank(),
+       panel.border = element_blank(),
+       axis.line.x = element_line(colour = "black"),
+       axis.line.y = element_line(colour = "black"),
+       plot.margin = unit(c(0.2,0.2,0.2,0.2), "lines"))
+plot.occ.chlo 
+
+library(patchwork)
+plot.occ.ra.chlo <- plot.occ.chlo | plot.ra.chlo 
+plot.occ.ra.chlo
+setwd('/Users/arifinabintarti/Documents/Research/Seeds_microbiome/Rainoutshelter/16SV4_OTU97/20210601_16SV4')
+ggsave("plot.occ.ra.chlo.png",
+      plot.occ.ra.chlo, device = "png",
+       width = 13, height =7, 
+      units= "in", dpi = 600)
+
+##### mitochondria sequences distribution ######
+
+# 20210601_16SV4_OTU97
+
+# load unfiltered otu and tax table
+otu.tax.unfiltered
+colnames(otu.tax.unfiltered)
+# select otu chloroplast and mitochondria
+otu.tax.mito <- otu.tax.unfiltered %>%
+    filter(Family == "Mitochondria")
+          
+dim(otu.tax.mito)                            
+head(otu.tax.mito)
+tail(otu.tax.mito)
+colnames(otu.tax.mito)
+# otu table mitochindria
+otu.mito <- otu.tax.mito[1:80]
+head(otu.mito)
+dim(otu.mito)
+colnames(otu.mito)
+# taxonomy table chloroplast
+tax.mito <- otu.tax.mito[,c(1,81:89)]
+head(tax.mito)
+# occupancy
+otu.mito <- column_to_rownames(otu.mito, var = "OTUID")
+colnames(otu.mito)
+otu.mito.PA <- 1*((otu.mito>0)==1)
+sum(otu.mito.PA)
+otu.mito.PA <- otu.mito.PA[rowSums(otu.mito.PA)>0,]
+occ.mito <- rowSums(otu.mito.PA)/ncol(otu.mito.PA)
+df.occ.mito <- as.data.frame(occ.mito)
+df.occ.mito <- rownames_to_column(df.occ.mito, var = "OTUID")
+dim(df.occ.mito)
+# rel. abund.
+head(otu.mito)
+otu.rel.mito <- decostand(otu.mito, method="total", MARGIN=2)
+head(otu.rel.mito)
+com_abund.mito <- rowSums(otu.rel.mito)
+df.com_abund.mito <- as.data.frame(com_abund.mito)
+head(df.com_abund.mito)
+df.com_abund.mito$relabund <- df.com_abund.mito$com_abund.mito/78
+sum(df.com_abund.mito$com_abund.mito)
+sum(df.com_abund.mito$relabund)
+df.com_abund.mito$percentrelabund=df.com_abund.mito$relabund*100
+sum(df.com_abund.mito$percentrelabund)
+df.com_abund.mito <- rownames_to_column(df.com_abund.mito, var = "OTUID")
+head(df.com_abund.mito)
+dim(df.com_abund.mito) ### all OTU with CumulativeRelAbund, percent CumulativeRelAbund!!!!!!!!!!!
+# merge occupancy table and mean relative abundance table
+df.occ.ra.mito <- merge(df.occ.mito, df.com_abund.mito, by.x =c("OTUID"), by.y = c("OTUID"))
+# merge the occupancy and relabund tabel with the taxonomy
+df.occ.ra.mito.tax <- merge(df.occ.ra.mito, tax.mito, by="OTUID")
+# re-order 
+sort.occ.ra.mito.tax <- df.occ.ra.mito.tax[order(df.occ.ra.mito.tax$relabund, decreasing = TRUE),]
+setwd('/Users/arifinabintarti/Documents/PAPER/PAPER_Bintarti_2021_Bean_Rainoutshelter/16SV4_OTU97/20210601_16SV4')
+#write.csv(sort.occ.ra.mito.tax, file = "sort.occ.ra.mito.tax.csv")
+sort.occ.ra.mito.tax.ed <- read.csv("sort.occ.ra.mito.tax.ed.csv")
+
+# plot ra
+library(forcats)
+library(dplyr)
+library(pals)
+set.seed(13)
+plot.ra.mito <- ggplot(sort.occ.ra.mito.tax.ed,aes(x=fct_reorder(OTUID.ed, percentrelabund, .desc=T), y=percentrelabund, fill=OTUID))+
+ geom_bar(aes(), stat="identity")+
+ coord_flip()+
+ scale_fill_manual(values=as.vector(stepped(n=24))) +
+ labs(y= "Relative Abundance (%)", x="OTU ID")+
+ theme_bw()+
+ scale_y_continuous(expand = expansion(mult = c(0.01, .1)))+
+ theme(axis.text=element_text(size=12), 
+       axis.title.y = element_blank(),
+       axis.title.x=element_text(size=14),
+       panel.grid.major = element_blank(),
+       panel.grid.minor = element_blank(),
+       legend.position = "none",
+       panel.background = element_blank(),
+       panel.grid = element_blank(),
+       panel.border = element_blank(),
+       axis.line.x = element_line(colour = "black"),
+       axis.line.y = element_line(colour = "black"),
+       plot.margin = unit(c(0.2,0.2,0.2,0.2), "lines"))
+
+plot.ra.mito
+
+# plot occ
+set.seed(13)
+plot.occ.mito <- ggplot(sort.occ.ra.mito.tax.ed,aes(x=fct_reorder(OTUID.ed, occ.mito, .desc=T), y=occ.mito, fill=OTUID))+
+ geom_bar(aes(), stat="identity")+
+ #coord_flip()+
+ scale_fill_manual(values=as.vector(stepped(n=24))) +
+ labs(title="B. Mitochondria",y= "Occupancy", x="OTU ID")+
+ theme_bw()+
+ scale_y_continuous(expand = expansion(mult = c(0.01, .1)))+
+ coord_flip()+
+ theme(plot.title = element_text(size = 15, face = "bold"),
+       axis.text=element_text(size=12, hjust = 0.5), 
+       axis.title=element_text(size=14),
+       panel.grid.major = element_blank(),
+       panel.grid.minor = element_blank(),
+       #legend.position = "right",
+       legend.position = "none",
+       panel.background = element_blank(),
+       panel.grid = element_blank(),
+       panel.border = element_blank(),
+       axis.line.x = element_line(colour = "black"),
+       axis.line.y = element_line(colour = "black"),
+       plot.margin = unit(c(0.2,0.2,0.2,0.2), "lines"))
+plot.occ.mito 
+
+library(patchwork)
+plot.occ.ra.chlo <- plot.occ.chlo | plot.ra.chlo 
+plot.occ.ra.chlo
+setwd('/Users/arifinabintarti/Documents/Research/Seeds_microbiome/Rainoutshelter/16SV4_OTU97/20210601_16SV4')
+ggsave("plot.occ.ra.chlo.png",
+      plot.occ.ra.chlo, device = "png",
+       width = 13, height =7, 
+      units= "in", dpi = 600)
 
 
-
-
-
+set.seed(13)
+plot.occ.ra.chlo.mito <- (plot.occ.chlo | plot.ra.chlo)/(plot.occ.mito | plot.ra.mito)
+plot.occ.ra.chlo.mito
+setwd('/Users/arifinabintarti/Documents/Research/Seeds_microbiome/Rainoutshelter/16SV4_OTU97/20210601_16SV4')
+ggsave("plot.occ.ra.chlo.mito.png",
+      plot.occ.ra.chlo.mito, device = "png",
+       width = 13, height =8, 
+      units= "in", dpi = 600)
 
 
 

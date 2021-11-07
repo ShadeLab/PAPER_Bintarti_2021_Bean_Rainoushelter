@@ -224,7 +224,7 @@ Bacteria,Acidobacteria,Subgroup 6,uncultured bacterium,uncultured bacterium,uncu
 Bacteria,Actinobacteria,Actinobacteria,Micrococcales,Micrococcaceae,Paeniglutamicibacter,NA,Paeniglutamicibacter,Micrococcaceae
 Bacteria,Bacteroidetes,Bacteroidia,Sphingobacteriales,Sphingobacteriaceae,Sphingobacterium,NA,Sphingobacterium,Sphingobacteriaceae
 Bacteria,Firmicutes,Bacilli,Bacillales,Bacillaceae,Bacillus,NA,Bacillus,Bacillaceae
-Bacteria,Proteobacteria,Alphaproteobacteria,Rhizobiales,Stappiaceae,NA,NA,NA,Stappiaceae
+Bacteria,Proteobacteria,Alphaproteobacteria,Rhizobiales,Stappiaceae,NA,NA,f_Stappiaceae,Stappiaceae
 Bacteria,Proteobacteria,Gammaproteobacteria,Betaproteobacteriales,Rhodocyclaceae,uncultured,NA,f_Rhodocyclaceae,Rhodocyclaceae
 Bacteria,Proteobacteria,Alphaproteobacteria,Rhizobiales,Rhizobiaceae,Mesorhizobium,NA,Mesorhizobium,Rhizobiaceae
 Bacteria,Bacteroidetes,Bacteroidia,Cytophagales,Microscillaceae,uncultured,uncultured bacterium,f_Microscillaceae,Microscillaceae

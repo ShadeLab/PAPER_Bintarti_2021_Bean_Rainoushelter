@@ -170,7 +170,7 @@ plot.unfil.dom <- ggplot(df.unfil1, aes(x=Domain, y=percent, fill=Domain))+
                     scale_fill_manual(labels = c("Bacteria","Plant"),values=c("#CC79A7", "#009E73"))+
                     geom_jitter(position = position_jitter(width = 0.1, height = 0, seed=13), alpha=0.3)+
                     theme_bw()+
-                    expand_limits(x = 0, y = 0)+
+                    #expand_limits(x = 0, y = 0)+
                     labs(title = "A. Experimental Sample")+
                     ylab("Read Proportion (%)")+
                     theme(legend.position="none",
@@ -208,7 +208,7 @@ plot.unfil.tax <- ggplot(df.unfil.tax1, aes(x=Taxonomy, y=percent, fill=Taxonomy
                     #scale_fill_viridis(discrete = T)+
                     geom_jitter(position = position_jitter(width = 0.1, height = 0, seed=13), alpha=0.3)+
                     theme_bw()+
-                    expand_limits(x = 0, y = 0)+
+                    #expand_limits(x = 0, y = 0)+
                     #geom_text(data=sum_rich_plant_new, aes(x=Plant,y=2+max.rich,label=Letter), vjust=0)+
                     labs(title = "B")+
                     ylab("Read Proportion (%)")+
@@ -265,15 +265,13 @@ NC1.tax.unfil.ed <- NC1.tax.unfiltered %>%
 colnames(NC1.tax.unfil.ed)
 NC1.tax.unfil.ed1 <- NC1.tax.unfil.ed[,c(1:9)]
 colnames(NC1.tax.unfil.ed1)
-#NC1.tax.unfil.ed1 <- column_to_rownames(NC1.tax.unfil.ed1, var = "OTUID")
-#nc1.tax.unfil.ed1$Taxonomy <- as.factor(nc1.tax.unfil.ed)
 tail(NC1.tax.unfil.ed1)
 str(NC1.tax.unfil.ed1)
 library(tidyr)
 long.dat.nc.unfil <- gather(NC1.tax.unfil.ed1, Sample, Read, NC1r2:NC7r2, factor_key = T)
 long.dat.nc.unfil
 
-detach(package:plyr)
+#detach(package:plyr)
 df.nc.unfil <- long.dat.nc.unfil %>%
   group_by(Sample, Domain) %>%
   summarise(read.number = sum(Read))
@@ -290,14 +288,17 @@ plot.nc.unfil.dom <- ggplot(df.nc.unfil1, aes(x=Domain, y=percent, fill=Domain))
                     scale_fill_manual(labels = c("Bacteria","Plant"),values=c("#CC79A7", "#009E73"))+
                     geom_jitter(position = position_jitter(width = 0.1, height = 0, seed=13), alpha=0.3)+
                     theme_bw()+
-                    expand_limits(x = 0, y = 0)+
-                    ylab("Read Proportion (%)")+
+                    #expand_limits(x = 0, y = 0)+
+                    labs(title = "B. Negative Control")+
+                    #ylab("Read Proportion (%)")+
                     theme(legend.position="none",
-                          axis.title.x = element_blank(),
-                          axis.text= element_text(size = 14),
-                          strip.text = element_text(size=18, face = 'bold'),
-                          plot.title = element_text(size = 14, face = 'bold'),
-                          axis.title.y = element_markdown(size=15,face="bold"),
+                          axis.title = element_blank(),
+                          axis.text.y = element_blank(),
+                          axis.ticks.y = element_blank(),
+                          axis.text.x = element_text(size = 13),
+                          #strip.text.x = element_text(size=18, face = 'bold'),
+                          plot.title = element_text(size = 14),
+                          #axis.title.y = element_markdown(size=15,face="bold"),
                           plot.background = element_blank(),
                           panel.grid.major = element_blank(),
                           panel.grid.minor = element_blank())+
@@ -340,11 +341,11 @@ colnames(PC1.tax.unfil.ed)
 PC1.tax.unfil.ed1 <- PC1.tax.unfil.ed[,c(1:9)]
 colnames(PC1.tax.unfil.ed1)
 
-library(tidyr)
+#library(tidyr)
 long.dat.pc.unfil <- gather(PC1.tax.unfil.ed1, Sample, Read, Mock1r2:Mock7r2, factor_key = T)
 long.dat.pc.unfil
 
-detach(package:plyr)
+#detach(package:plyr)
 df.pc.unfil <- long.dat.pc.unfil %>%
   group_by(Sample, Domain) %>%
   summarise(read.number = sum(Read))
@@ -352,21 +353,24 @@ df.pc.unfil1 <- df.pc.unfil %>%
   group_by(Sample) %>% 
   mutate(percent= prop.table(read.number) * 100)
 
-library(ggbeeswarm)
-library(ggtext)
+#library(ggbeeswarm)
+#library(ggtext)
 plot.pc.unfil.dom <- ggplot(df.pc.unfil1, aes(x=Domain, y=percent, fill=Domain))+
                     geom_violin(trim = F, scale="width") +
                     scale_fill_manual(labels = c("Bacteria","Plant"),values=c("#CC79A7", "#009E73"))+
                     geom_jitter(position = position_jitter(width = 0.1, height = 0, seed=13), alpha=0.3)+
                     theme_bw()+
-                    expand_limits(x = 0, y = 0)+
-                    ylab("Read Proportion (%)")+
+                    #expand_limits(x = 0, y = 0)+
+                    labs(title = "C. Positive Control")+
+                    #ylab("Read Proportion (%)")+
                     theme(legend.position="none",
-                          axis.title.x = element_blank(),
-                          axis.text= element_text(size = 14),
-                          strip.text = element_text(size=18, face = 'bold'),
-                          plot.title = element_text(size = 14, face = 'bold'),
-                          axis.title.y = element_markdown(size=15,face="bold"),
+                          axis.title = element_blank(),
+                          axis.text.y = element_blank(),
+                          axis.ticks.y = element_blank(),
+                          axis.text.x = element_text(size = 13),
+                          #strip.text.x = element_text(size=18, face = 'bold'),
+                          plot.title = element_text(size = 14),
+                          #axis.title.y = element_markdown(size=15,face="bold"),
                           plot.background = element_blank(),
                           panel.grid.major = element_blank(),
                           panel.grid.minor = element_blank())+
@@ -412,12 +416,12 @@ colnames(zymo1.tax.unfil.ed)
 zymo1.tax.unfil.ed1 <- zymo1.tax.unfil.ed[,c(1:3)]
 colnames(zymo1.tax.unfil.ed1)
 
-library(tidyr)
+#library(tidyr)
 long.dat.zymo.unfil <- zymo1.tax.unfil.ed1
 long.dat.zymo.unfil$Read <- long.dat.zymo.unfil$ZymoMockDNAr2
 long.dat.zymo.unfil
 
-detach(package:plyr)
+#detach(package:plyr)
 df.zymo.unfil <- long.dat.zymo.unfil %>%
   group_by(Domain) %>%
   summarise(read.number = sum(Read))
@@ -425,26 +429,24 @@ df.zymo.unfil1 <- df.zymo.unfil %>%
   #group_by(Sample) %>% 
   mutate(percent= prop.table(read.number) * 100)
 
-library(ggbeeswarm)
-library(ggtext)
+#library(ggbeeswarm)
+#library(ggtext)
 plot.zymo.unfil.dom <- ggplot(df.zymo.unfil1, aes(x=Domain, y=percent, fill=Domain))+
                     geom_bar(stat='identity') +
-                    #scale_fill_manual(labels = c("Bacteria","Plant"), values=as.vector(stepped(n=2)))+
                     scale_fill_manual(labels = c("Bacteria","Plant"),values=c("#CC79A7", "#009E73"))+
-                    #geom_jitter(position = position_jitter(width = 0.1, height = 0, seed=13), alpha=0.3)+
                     theme_bw()+
-                    expand_limits(x = 0, y = 0)+
                     ylab("Read Proportion (%)")+
+                    labs(title = "D. RTSF Positive Control")+
                     theme(legend.position="none",
+                          axis.title.y = element_markdown(size=13),
                           axis.title.x = element_blank(),
-                          axis.text= element_text(size = 14),
-                          strip.text = element_text(size=18, face = 'bold'),
-                          plot.title = element_text(size = 14, face = 'bold'),
-                          axis.title.y = element_markdown(size=15,face="bold"),
+                          axis.text.y = element_text(size = 13),
+                          axis.text.x = element_text(size = 13),
+                          plot.title = element_text(size = 14),
                           plot.background = element_blank(),
                           panel.grid.major = element_blank(),
                           panel.grid.minor = element_blank())
-                          #stat_summary(fun="median",geom="point", size=10, color="red", shape=95)
+                        
                           
 plot.zymo.unfil.dom
 setwd('/Users/arifinabintarti/Documents/Research/Seeds_microbiome/Rainoutshelter/16SV4_OTU97/20210604_16SV4')
@@ -483,12 +485,12 @@ colnames(RTNC1.tax.unfil.ed)
 RTNC1.tax.unfil.ed1 <- RTNC1.tax.unfil.ed[,c(1:3)]
 colnames(RTNC1.tax.unfil.ed1)
 
-library(tidyr)
+#library(tidyr)
 long.dat.rtnc.unfil <- RTNC1.tax.unfil.ed1
 long.dat.rtnc.unfil$Read <- long.dat.rtnc.unfil$RTSFNTCr2
 long.dat.rtnc.unfil
 
-detach(package:plyr)
+#detach(package:plyr)
 df.rtnc.unfil <- long.dat.rtnc.unfil %>%
   group_by(Domain) %>%
   summarise(read.number = sum(Read))
@@ -496,26 +498,24 @@ df.rtnc.unfil1 <- df.rtnc.unfil %>%
   #group_by(Sample) %>% 
   mutate(percent= prop.table(read.number) * 100)
 
-library(ggbeeswarm)
-library(ggtext)
+#library(ggbeeswarm)
+#library(ggtext)
 plot.rtnc.unfil.dom <- ggplot(df.rtnc.unfil1, aes(x=Domain, y=percent, fill=Domain))+
                     geom_bar(stat='identity') +
-                    #scale_fill_manual(labels = c("Bacteria","Plant"), values=as.vector(stepped(n=2)))+
                     scale_fill_manual(labels = c("Bacteria","Plant"),values=c("#CC79A7", "#009E73"))+
-                    #geom_jitter(position = position_jitter(width = 0.1, height = 0, seed=13), alpha=0.3)+
                     theme_bw()+
-                    expand_limits(x = 0, y = 0)+
-                    ylab("Read Proportion (%)")+
+                    #expand_limits(x = 0, y = 0)+
+                    labs(title = "E. RTSF Negative Control")+
                     theme(legend.position="none",
-                          axis.title.x = element_blank(),
-                          axis.text= element_text(size = 14),
-                          strip.text = element_text(size=18, face = 'bold'),
-                          plot.title = element_text(size = 14, face = 'bold'),
-                          axis.title.y = element_markdown(size=15,face="bold"),
+                          axis.title = element_blank(),
+                          axis.text.y = element_blank(),
+                          axis.ticks.y = element_blank(),
+                          axis.text.x = element_text(size = 13),
+                          plot.title = element_text(size = 14),
                           plot.background = element_blank(),
                           panel.grid.major = element_blank(),
                           panel.grid.minor = element_blank())
-                          #stat_summary(fun="median",geom="point", size=10, color="red", shape=95)
+                          
                           
 
 plot.rtnc.unfil.dom
@@ -529,18 +529,21 @@ ggsave("20210604_rtnc_plant_proportion.eps",
 #############################################################################################################################################################
 # COMPILE ALL READ PROPORTION OF PLANT CONTAMINANTS FIGURES
 
-library(patchwork)
 plot.unfil.dom
 plot.nc.unfil.dom
 plot.pc.unfil.dom
 plot.zymo.unfil.dom
 plot.rtnc.unfil.dom
-PlantContProp <- (plot.unfil.dom | plot.nc.unfil.dom | plot.pc.unfil.dom) / (plot.rtnc.unfil.dom | plot.zymo.unfil.dom)
 setwd('/Users/arifinabintarti/Documents/Research/Seeds_microbiome/Rainoutshelter/16SV4_OTU97/20210604_16SV4')
+library(ggpubr)
+PlantContProp <- ggarrange(plot.unfil.dom,plot.nc.unfil.dom,plot.pc.unfil.dom,plot.zymo.unfil.dom,plot.rtnc.unfil.dom, ncol = 3, nrow = 2)
+PlantContProp
 ggsave("20210604_rPlantContProp.eps",
        PlantContProp, device=cairo_ps,
-       width = 8, height =5, 
+       width = 10, height =7, 
        units= "in", dpi = 600)
+
+#############################################################################################################################################################
 
 # ANALYSIS OF READS AFTER CHLOROPLAST AND MITOCHONDRIA REMOVAL
 
@@ -729,13 +732,12 @@ p.rare <- ggrare(phyl.obj, step = 1, color = "sample_type", label = "sample_type
 #p <- ggrare(psdata, step = 1000, color = "SampleType", label = "Sample", se = FALSE)
 library(ggtext)
 rare <- p.rare + 
- #facet_wrap(~Plant, labeller = label_both)+
+ scale_color_manual(labels = c("Experimental Sample", "Negative  Control", "Positive Control", "RTSF Negative Control", "RTSF Positive Control"), values = c("#88CCEE", "#CC6677", "#DDCC77", "#117733", "#332288"))+
  theme_bw()+
- #scale_color_manual(values = Palette)+
  scale_size_manual(values = 60)+
  ylab("Number of OTUs")+
  xlab("Number of Reads")+
- #labs(title = "(a) Bacteria/archaea")+
+ labs(color='Sample Type:') +
  theme( strip.text.x = element_text(size=14, face='bold'),
         axis.text.x=element_text(size = 14),
         axis.text.y = element_text(size = 14),
@@ -744,7 +746,8 @@ rare <- p.rare +
         axis.title.y = element_text(size=15,face="bold"),
         axis.title.x = element_text(size=15,face="bold"),
         legend.position =  "right",
-        legend.title = element_text(size=15),
+        legend.title = element_text(size=15, face ="bold"),
+        legend.text = element_text(size=14),
         plot.background = element_blank(),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank())
@@ -753,13 +756,13 @@ plot(rare)
 setwd('/Users/arifinabintarti/Documents/Research/Seeds_microbiome/Rainoutshelter/16SV4_OTU97/20210604_16SV4')
 ggsave("20210604rarefactioncurve.pdf",
        rare, device= "pdf",
-       width = 7, height = 5, 
+       width = 9, height = 7, 
        units= "in", dpi = 600)
 
 #####################################################################################################################################
 ######################################################################################################################################
 
-### bacterial taxa composition of all samples (after plant contaminant removal and before microbial decontamination and normalization)
+### bacterial taxa composition of all samples (after plant contaminant removal)
 
 # make phyloseq object
 otu #otu table after plant contaminant removal
@@ -768,6 +771,8 @@ sort(rowSums(otu, na.rm = FALSE, dims = 1), decreasing = F)
 
 # make phyloseq otu table and taxonomy
 head(otu)
+colnames(otu)
+colnames(otu)[80] <- "RTSF_ZymoMockDNAr2"
 otu.phyl = otu_table(otu, taxa_are_rows = TRUE)
 head(tax.ed)
 tax.ed <- column_to_rownames(tax.ed, var = "OTUID")
@@ -778,6 +783,7 @@ setwd('/Users/arifinabintarti/Documents/PAPER/PAPER_Bintarti_2021_Bean_Rainoutsh
 map <- read.csv("metadata_part.csv")
 head(map)
 map$sample_id <- as.factor(map$sample_id)
+map$batch <- as.factor(map$batch)
 rownames(map) <- map$sample_id
 map.phyl <- sample_data(map)
 
@@ -794,7 +800,7 @@ bac.cl.ra <- transform_sample_counts(bac.cl, function(x) x/sum(x))
 bac.cl.ra
 
 df.cl <- psmelt(bac.cl.ra) %>%
-  group_by(sample_type, Class) %>%
+  group_by(batch,Sample, Class) %>%
   summarize(Mean = mean(Abundance)) %>%
   arrange(-Mean)
 
@@ -816,7 +822,7 @@ df.cl$Class <- as.character(df.cl$Class)
 #install.packages("pals")
 library(pals)
 
-cl <- ggplot(data=df.cl, aes(x=sample_type, y=Mean, fill=Class))
+cl <- ggplot(data=df.cl, aes(x=Sample, y=Mean, fill=Class))
 plot.cl <- cl + 
                      geom_bar(aes(), stat="identity", position="fill") + 
                      scale_fill_manual(values=as.vector(stepped(n=24))) +
@@ -825,24 +831,18 @@ plot.cl <- cl +
                      theme(legend.position="right") + 
                      guides(fill=guide_legend(nrow=5))+
                      #labs(y= "Mean Relative Abundance", x="Plant")+
-                     labs(y= "Mean Relative Abundance", x="Sample Type")+
+                     labs(y= "Mean Relative Abundance")+
                      theme(plot.title = element_text(size = 20, face="bold"),
-                           #axis.line.y = element_line(size=0.5, colour = "black"),
                            panel.grid.major = element_blank(),
                            panel.grid.minor = element_blank(),
-                           axis.text=element_text(size=14),
-                           #axis.line.x = element_blank(),
-                           #axis.text.x = element_blank(),
-                           #axis.ticks.x = element_blank(),
-                           #axis.title.x = element_blank(),
-                           axis.title =  element_markdown(size=15,face="bold"),
+                           axis.text.y=element_text(size=12),
+                           axis.text.x = element_text(size=12, vjust = 0.5, hjust = 1, angle=90),
+                           axis.title =  element_markdown(size=13,face="bold"),
                            legend.text=element_text(size = 10),
                            legend.title = element_text(size=11, face = "bold"),
                            panel.grid = element_blank(), 
                            panel.background = element_blank(),
-                           #strip.text.x = element_text(size = 12, face = "bold"),
                            panel.border = element_rect(colour = "black", fill = NA,size = 0.2))+
-                           #facet_grid(~plant, switch = "x", scales = "free_x")+
                            guides(fill=guide_legend(ncol=1,bycol=TRUE))
                            
 plot.cl
@@ -858,54 +858,104 @@ ggsave("20210604_barplot_class.eps",
 # merge taxa by genus
 
 # 2. genus - Bacteria
-bac.gen <- tax_glom(phyl.obj, taxrank = "Genus.ed", NArm = F)
+bac.gen <- tax_glom(phyl.obj, taxrank = "Genus", NArm = F)
 bac.gen.ra <- transform_sample_counts(bac.gen, function(x) x/sum(x))
-bac.gen.ra #197 taxa
+bac.gen.ra #153 taxa
 
 df.gen <- psmelt(bac.gen.ra) %>%
-  group_by(sample_type, Genus.ed) %>%
+  group_by(batch,Sample, Genus) %>%
   summarize(Mean = mean(Abundance)) %>%
   arrange(-Mean)
 
-df.gen$Genus.ed <- as.character(df.gen$Genus.ed)
-df.gen$Genus.ed[df.gen$Mean < 0.005] <- "Other (less than 0.5%)"
+df.gen$Genus <- as.character(df.gen$Genus)
+df.gen$Genus[df.gen$Mean < 0.03] <- "Other (less than 3%)"
 
-gen <- ggplot(data=df.gen, aes(x=sample_type, y=Mean, fill=Genus.ed))
+library(randomcoloR)
+set.seed(1)
+n <- 45
+palette <- distinctColorPalette(n)
+col=palette
+
+gen <- ggplot(data=df.gen, aes(x=Sample, y=Mean, fill=Genus))
 plot.gen <- gen + 
                      geom_bar(aes(), stat="identity", position="fill") + 
-                     scale_fill_manual(name="Genus",values=as.vector(stepped(n=24))) +
-                     #scale_fill_manual(values=c('#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c','#f58231', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080', 'lightslateblue', '#000000', 'tomato','hotpink2'))+
-                     #scale_fill_manual(values=c("#44AA99", "#332288", "#117733","#CC6677","#DDCC77", "#88CCEE","#661100","#AA4499" ,"#888888"))+
+                     #scale_colour_viridis(discrete = T)+
+                     #facet_grid(. ~ batch) + 
+                     scale_fill_manual(name="Genus",values=col) +
+                     #scale_fill_manual(values=as.vector(stepped(n=24))) +
+                     #scale_fill_manual(name="Genus",values=as.vector(polychrome(n=36))) +
                      theme(legend.position="right") + 
                      guides(fill=guide_legend(nrow=5))+
-                     #labs(y= "Mean Relative Abundance", x="Plant")+
-                     labs(y= "Mean Relative Abundance", x="Sample Type")+
+                     labs(y= "Mean Relative Abundance")+
                      theme(plot.title = element_text(size = 20, face="bold"),
-                           #axis.line.y = element_line(size=0.5, colour = "black"),
                            panel.grid.major = element_blank(),
                            panel.grid.minor = element_blank(),
-                           axis.text=element_text(size=14),
-                           #axis.line.x = element_blank(),
-                           #axis.text.x = element_blank(),
-                           #axis.ticks.x = element_blank(),
-                           #axis.title.x = element_blank(),
-                           axis.title =  element_markdown(size=15,face="bold"),
+                           axis.text.y=element_text(size=12),
+                           axis.text.x = element_text(size=10, vjust = 0.5, hjust = 1, angle=90),
+                           axis.title =  element_markdown(size=13,face="bold"),
                            legend.text=element_text(size = 10),
                            legend.title = element_text(size=11, face = "bold"),
                            panel.grid = element_blank(), 
                            panel.background = element_blank(),
-                           #strip.text.x = element_text(size = 12, face = "bold"),
                            panel.border = element_rect(colour = "black", fill = NA,size = 0.2))+
-                           #facet_grid(~plant, switch = "x", scales = "free_x")+
-                           guides(fill=guide_legend(ncol=1,bycol=TRUE))
+                           guides(fill=guide_legend(ncol=2,bycol=TRUE))
                        
 plot.gen
+plot.gen1 <- plot.gen +
+  facet_wrap(~ batch, scales="free_x", nrow = 2)+
+  theme(strip.background =element_rect(fill="grey"))+
+  theme(strip.text = element_text(colour = 'black', size = 14, face = 'bold'))
+plot.gen1
+
+setwd('/Users/arifinabintarti/Documents/Research/Seeds_microbiome/Rainoutshelter/16SV4_OTU97/20210604_16SV4')
+ggsave("20210604_barplot_genus_all.eps",
+      plot.gen1, device = "eps",
+       width = 15, height =  8, 
+       units= "in", dpi = 600)
+
+# merge taxa by family
+
+# 2. Family - Bacteria
+bac.fam <- tax_glom(phyl.obj, taxrank = "Family", NArm = F)
+bac.fam.ra <- transform_sample_counts(bac.fam, function(x) x/sum(x))
+bac.fam.ra #87 taxa
+
+df.fam <- psmelt(bac.fam.ra) %>%
+  group_by(batch,Sample, Family) %>%
+  summarize(Mean = mean(Abundance)) %>%
+  arrange(-Mean)
+
+df.fam$Family <- as.character(df.fam$Family)
+df.fam$Family[df.fam$Mean < 0.01] <- "Other (less than 1%)"
+
+fam <- ggplot(data=df.fam, aes(x=Sample, y=Mean, fill=Family))
+plot.fam <- fam + 
+                     geom_bar(aes(), stat="identity", position="fill") + 
+                     scale_fill_manual(name="Family",values=col) +
+                     #scale_fill_manual(name="Family",values=as.vector(polychrome(n=36))) +
+                     theme(legend.position="right") + 
+                     guides(fill=guide_legend(nrow=5))+
+                     labs(y= "Mean Relative Abundance", x="Sample Type")+
+                     theme(plot.title = element_text(size = 20, face="bold"),
+                           panel.grid.major = element_blank(),
+                           panel.grid.minor = element_blank(),
+                           axis.text.y=element_text(size=12),
+                           axis.text.x = element_text(size=12, vjust = 0.5, hjust = 1, angle=90),
+                           axis.title =  element_markdown(size=13,face="bold"),
+                           legend.text=element_text(size = 10),
+                           legend.title = element_text(size=11, face = "bold"),
+                           panel.grid = element_blank(), 
+                           panel.background = element_blank(),
+                           panel.border = element_rect(colour = "black", fill = NA,size = 0.2))+
+                           guides(fill=guide_legend(ncol=2,bycol=TRUE))
+                       
+plot.fam
+
 setwd('/Users/arifinabintarti/Documents/Research/Seeds_microbiome/Rainoutshelter/16SV4_OTU97/20210604_16SV4')
 ggsave("20210604_barplot_genus.eps",
       plot.gen, device = "eps",
        width = 13, height =7.5, 
        units= "in", dpi = 600)
-
 #####################################################################################################################################
 #####################################################################################################################################
 
@@ -1138,29 +1188,19 @@ unfil.cl <- ggplot(data=df.unfil.cl, aes(x=sample_type, y=Mean, fill=Class))
 plot.unfil.cl <- unfil.cl + 
                      geom_bar(aes(), stat="identity", position="fill") + 
                      scale_fill_manual(values=as.vector(stepped(n=24))) +
-                     #scale_fill_manual(values=c('#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c','#f58231', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080', 'lightslateblue', '#000000', 'tomato','hotpink2'))+
-                     #scale_fill_manual(values=c("#44AA99", "#332288", "#117733","#CC6677","#DDCC77", "#88CCEE","#661100","#AA4499" ,"#888888"))+
                      theme(legend.position="right") + 
                      guides(fill=guide_legend(nrow=5))+
-                     #labs(y= "Mean Relative Abundance", x="Plant")+
                      labs(y= "Mean Relative Abundance", x="Sample Type")+
                      theme(plot.title = element_text(size = 20, face="bold"),
-                           #axis.line.y = element_line(size=0.5, colour = "black"),
                            panel.grid.major = element_blank(),
                            panel.grid.minor = element_blank(),
                            axis.text=element_text(size=14),
-                           #axis.line.x = element_blank(),
-                           #axis.text.x = element_blank(),
-                           #axis.ticks.x = element_blank(),
-                           #axis.title.x = element_blank(),
                            axis.title =  element_markdown(size=15,face="bold"),
                            legend.text=element_text(size = 10),
                            legend.title = element_text(size=11, face = "bold"),
                            panel.grid = element_blank(), 
                            panel.background = element_blank(),
-                           #strip.text.x = element_text(size = 12, face = "bold"),
                            panel.border = element_rect(colour = "black", fill = NA,size = 0.2))+
-                           #facet_grid(~plant, switch = "x", scales = "free_x")+
                            guides(fill=guide_legend(ncol=1,bycol=TRUE))
                            
 plot.unfil.cl
@@ -1181,50 +1221,93 @@ bac.unfil.gen.ra <- transform_sample_counts(bac.unfil.gen, function(x) x/sum(x))
 bac.unfil.gen.ra #209 taxa
 
 df.unfil.gen <- psmelt(bac.unfil.gen.ra) %>%
-  group_by(sample_type, Genus.ed) %>%
+  group_by(batch, Sample, Genus.ed) %>%
   summarize(Mean = mean(Abundance)) %>%
   arrange(-Mean)
 
 df.unfil.gen$Genus.ed <- as.character(df.unfil.gen$Genus.ed)
-df.unfil.gen$Genus.ed[df.unfil.gen$Mean < 0.005] <- "Other (less than 0.5%)"
+df.unfil.gen$Genus.ed[df.unfil.gen$Mean < 0.001] <- "Other (less than 0.1%)"
 
-unfil.gen <- ggplot(data=df.unfil.gen, aes(x=sample_type, y=Mean, fill=Genus.ed))
+library(randomcoloR)
+set.seed(1)
+n <- 50
+palette <- distinctColorPalette(n)
+col=palette
+
+unfil.gen <- ggplot(data=df.unfil.gen, aes(x=Sample, y=Mean, fill=Genus.ed))
 plot.unfil.gen <- unfil.gen + 
                      geom_bar(aes(), stat="identity", position="fill") + 
-                     scale_fill_manual(name="Genus", values=as.vector(stepped(n=24))) +
-                     #scale_fill_manual(values=c('#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c','#f58231', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080', 'lightslateblue', '#000000', 'tomato','hotpink2'))+
-                     #scale_fill_manual(values=c("#44AA99", "#332288", "#117733","#CC6677","#DDCC77", "#88CCEE","#661100","#AA4499" ,"#888888"))+
+                     #scale_fill_manual(name="Genus", values=as.vector(stepped(n=24))) +
+                     scale_fill_manual(name="Genus",values=col) +
                      theme(legend.position="right") + 
                      guides(fill=guide_legend(nrow=5))+
-                     #labs(y= "Mean Relative Abundance", x="Plant")+
-                     labs(y= "Mean Relative Abundance", x="Sample Type")+
+                     labs(y= "Mean Relative Abundance", x="Sample")+
                      theme(plot.title = element_text(size = 20, face="bold"),
-                           #axis.line.y = element_line(size=0.5, colour = "black"),
                            panel.grid.major = element_blank(),
                            panel.grid.minor = element_blank(),
-                           axis.text=element_text(size=14),
-                           #axis.line.x = element_blank(),
-                           #axis.text.x = element_blank(),
-                           #axis.ticks.x = element_blank(),
-                           #axis.title.x = element_blank(),
+                           axis.text.y=element_text(size=12),
+                           axis.text.x = element_text(size=10, vjust = 0.5, hjust = 1, angle=90),
                            axis.title =  element_markdown(size=15,face="bold"),
                            legend.text=element_text(size = 10),
                            legend.title = element_text(size=11, face = "bold"),
                            panel.grid = element_blank(), 
                            panel.background = element_blank(),
-                           #strip.text.x = element_text(size = 12, face = "bold"),
                            panel.border = element_rect(colour = "black", fill = NA,size = 0.2))+
-                           #facet_grid(~plant, switch = "x", scales = "free_x")+
-                           guides(fill=guide_legend(ncol=1,bycol=TRUE))
+                           guides(fill=guide_legend(ncol=2,bycol=TRUE))
                            
 plot.unfil.gen
 
+plot.unfil.gen1 <- plot.unfil.gen +
+  facet_wrap(~ batch, scales="free_x", nrow = 2)+
+  theme(strip.background =element_rect(fill="grey"))+
+  theme(strip.text = element_text(colour = 'black', size = 14, face = 'bold'))
+plot.unfil.gen1
 
 setwd('/Users/arifinabintarti/Documents/Research/Seeds_microbiome/Rainoutshelter/16SV4_OTU97/20210604_16SV4')
-ggsave("20210604_barplot_genus.unfiltered.eps",
-      plot.unfil.gen, device = "eps",
-       width = 13, height =7.5, 
+ggsave("20210604_barplot_genus_all_unfiltered.eps",
+      plot.unfil.gen1, device = "eps",
+       width = 15, height =8, 
        units= "in", dpi = 600)
+
+## make a bubble plot for all samples
+
+df.unfil.gen <- psmelt(bac.unfil.gen.ra) %>%
+  group_by(batch, Sample, Genus.ed) %>%
+  summarize(Mean = mean(Abundance)) %>%
+  arrange(-Mean)
+
+df.unfil.gen$Genus.ed <- as.character(df.unfil.gen$Genus.ed)
+df.unfil.gen$Genus.ed[df.unfil.gen$Mean < 0.0001] <- "Other (less than 0.01%)"
+
+df.unfil.gen$percent.mean <- df.unfil.gen$Mean*100
+unfil.gen.bubble.plot <- ggplot(data=df.unfil.gen, aes(x=Sample, y=Genus.ed)) + 
+                     geom_point(aes(size=percent.mean), alpha = 0.75, shape = 21) + 
+                     scale_size_continuous(limits = c(0.0000000000000000000001, 100), range = c(1,10), breaks = c(0.1,1,10,50)) +
+                     labs(size = "Mean Relative Abundance (%)", x ="Sample", y="Taxa")+
+                     theme(legend.key=element_blank(),
+                     axis.title =  element_markdown(size=15,face="bold"),
+                     axis.text.x = element_text(colour = "black", size = 8, vjust = 0.5, hjust = 1, angle=90), 
+                     axis.text.y = element_text(colour = "black", size = 10), 
+                     legend.text = element_text(size = 10, face ="bold", colour ="black"), 
+                     legend.title = element_text(size = 12, face = "bold"), 
+                     panel.border = element_rect(colour = "black", fill = NA, size = 1.2), 
+                     legend.position = "right") +  
+                     scale_fill_manual(values = colours, guide = "none")
+                           
+unfil.gen.bubble.plot
+
+unfil.gen.bubble.plot1 <- unfil.gen.bubble.plot +
+  facet_wrap(~ batch, scales="free_x", nrow = 1)+
+  theme(strip.background =element_rect(fill="grey"))+
+  theme(strip.text = element_text(colour = 'black', size = 14, face = 'bold'))
+unfil.gen.bubble.plot1
+
+setwd('/Users/arifinabintarti/Documents/Research/Seeds_microbiome/Rainoutshelter/16SV4_OTU97/20210604_16SV4')
+ggsave("20210604_unfil.gen.bubble.plot1.tiff",
+      unfil.gen.bubble.plot1, device = "tiff",
+       width = 23, height =10, 
+       units= "in", dpi = 600)
+
 
 #####################################################################################################################################
 #####################################################################################################################################
@@ -1420,6 +1503,11 @@ longdf.unfil <- data.frame(OTUID=as.factor(rownames(otu.unfil)), otu.unfil, chec
   left_join(tax.unfil.ed)  %>% #adding the taxonomy info (grouped by the 'OTUID' column)
   group_by(OTUID, sample_id) %>%
   summarise(n=sum(abun))
+
+#df <- data.frame(OTUID=as.factor(rownames(otu.unfil)), otu.unfil, check.names = F)
+#colnames(df)
+#ldf <- gather(df,sample_id, abun, -OTUID)
+
 
 ##build the new table: OTUID as rownames and sample_id as colnames
 widedf.unfil <- as.data.frame(spread(longdf.unfil, OTUID, n, fill=0))
@@ -1671,6 +1759,122 @@ dim(unique.nc.unfil.tax)
 
 setwd('/Users/arifinabintarti/Documents/PAPER/PAPER_Bintarti_2021_Bean_Rainoutshelter/16SV4_OTU97/20210604_16SV4')
 write.csv(unique.nc.unfil.tax, file = "unique.nc.unfil.tax.csv")
+
+##### chloroplast sequences distribution ######
+
+# 20210604_16SV4_OTU97
+
+# load unfiltered otu and tax table
+otu.tax.unfiltered
+colnames(otu.tax.unfiltered)
+# select otu chloroplast and mitochondria
+otu.tax.chlo <- otu.tax.unfiltered %>%
+    filter(Order == "Chloroplast")
+dim(otu.tax.chlo)                            
+head(otu.tax.chlo)
+tail(otu.tax.chlo)
+colnames(otu.tax.chlo)
+# otu table chloroplast
+otu.chlo <- otu.tax.chlo[1:81]
+head(otu.chlo)
+dim(otu.chlo)
+# taxonomy table chloroplast
+tax.chlo <- otu.tax.chlo[,c(1,85:90)]
+head(tax.chlo)
+# occupancy
+otu.chlo <- column_to_rownames(otu.chlo, var = "OTUID")
+otu.chlo.PA <- 1*((otu.chlo>0)==1)
+sum(otu.chlo.PA)
+otu.chlo.PA <- otu.chlo.PA[rowSums(otu.chlo.PA)>0,]
+occ.chlo <- rowSums(otu.chlo.PA)/ncol(otu.chlo.PA)
+df.occ.chlo <- as.data.frame(occ.chlo)
+df.occ.chlo <- rownames_to_column(df.occ.chlo, var = "OTUID")
+dim(df.occ.chlo)
+# rel. abund.
+otu.rel.chlo <- decostand(otu.chlo, method="total", MARGIN=2)
+com_abund.chlo <- rowSums(otu.rel.chlo)
+df.com_abund.chlo <- as.data.frame(com_abund.chlo)
+head(df.com_abund.chlo)
+df.com_abund.chlo$relabund <- df.com_abund.chlo$com_abund.chlo/80
+sum(df.com_abund.chlo$com_abund.chlo)
+sum(df.com_abund.chlo$relabund)
+df.com_abund.chlo$percentrelabund=df.com_abund.chlo$relabund*100
+sum(df.com_abund.chlo$percentrelabund)
+df.com_abund.chlo <- rownames_to_column(df.com_abund.chlo, var = "OTUID")
+head(df.com_abund.chlo)
+dim(df.com_abund.chlo) ### all OTU with CumulativeRelAbund, percent CumulativeRelAbund!!!!!!!!!!!
+# merge occupancy table and mean relative abundance table
+df.occ.ra.chlo <- merge(df.occ.chlo, df.com_abund.chlo, by.x =c("OTUID"), by.y = c("OTUID"))
+# merge the occupancy and relabund tabel with the taxonomy
+df.occ.ra.chlo.tax <- merge(df.occ.ra.chlo, tax.chlo, by="OTUID")
+# re-order 
+sort.occ.ra.chlo.tax <- df.occ.ra.chlo.tax[order(df.occ.ra.chlo.tax$relabund, decreasing = TRUE),]
+setwd('/Users/arifinabintarti/Documents/PAPER/PAPER_Bintarti_2021_Bean_Rainoutshelter/16SV4_OTU97/20210604_16SV4')
+#write.csv(sort.occ.ra.chlo.tax, file = "sort.occ.ra.chlo.tax.csv")
+sort.occ.ra.chlo.tax.ed <- read.csv("sort.occ.ra.chlo.tax.ed.csv")
+
+# plot ra
+library(forcats)
+library(dplyr)
+plot.ra.chlo <- ggplot(sort.occ.ra.chlo.tax.ed,aes(x=fct_reorder(OTUID.ed, percentrelabund, .desc=T), y=percentrelabund, fill=OTUID))+
+ geom_bar(aes(), stat="identity")+
+ coord_flip()+
+ scale_fill_manual(values=as.vector(stepped(n=24))) +
+ labs(y= "Relative Abundance (%)", x="OTU ID")+
+ theme_bw()+
+ scale_y_continuous(expand = expansion(mult = c(0.01, .1)))+
+ theme(axis.text=element_text(size=12), 
+       axis.title.y = element_blank(),
+       axis.title.x=element_text(size=14,face="bold"),
+       panel.grid.major = element_blank(),
+       panel.grid.minor = element_blank(),
+       legend.position = "none",
+       panel.background = element_blank(),
+       panel.grid = element_blank(),
+       panel.border = element_blank(),
+       axis.line.x = element_line(colour = "black"),
+       axis.line.y = element_line(colour = "black"),
+       plot.margin = unit(c(0.2,0.2,0.2,0.2), "lines"))
+
+plot.ra.chlo
+
+# plot occ
+plot.occ.chlo <- ggplot(sort.occ.ra.chlo.tax.ed,aes(x=fct_reorder(OTUID.ed, occ.chlo, .desc=T), y=occ.chlo, fill=OTUID))+
+ geom_bar(aes(), stat="identity")+
+ #coord_flip()+
+ scale_fill_manual(values=as.vector(stepped(n=24))) +
+ labs(y= "Occupancy", x="OTU ID")+
+ theme_bw()+
+ scale_y_continuous(expand = expansion(mult = c(0.01, .1)))+
+ coord_flip()+
+ theme(axis.text=element_text(size=12, hjust = 0.5), 
+       axis.title=element_text(size=14,face="bold"),
+       panel.grid.major = element_blank(),
+       panel.grid.minor = element_blank(),
+       #legend.position = "right",
+       legend.position = "none",
+       panel.background = element_blank(),
+       panel.grid = element_blank(),
+       panel.border = element_blank(),
+       axis.line.x = element_line(colour = "black"),
+       axis.line.y = element_line(colour = "black"),
+       plot.margin = unit(c(0.2,0.2,0.2,0.2), "lines"))
+plot.occ.chlo 
+
+library(patchwork)
+plot.occ.ra.chlo <- plot.occ.chlo | plot.ra.chlo 
+plot.occ.ra.chlo
+setwd('/Users/arifinabintarti/Documents/Research/Seeds_microbiome/Rainoutshelter/16SV4_OTU97/20210604_16SV4')
+ggsave("plot.occ.ra.chlo.png",
+      plot.occ.ra.chlo, device = "png",
+       width = 13, height =7, 
+      units= "in", dpi = 600)
+
+
+
+
+
+
 
 ##################################################################################################################
 ## Making plot for the DNA cocentration

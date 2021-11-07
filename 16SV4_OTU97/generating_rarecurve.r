@@ -79,7 +79,7 @@ ggrare <- function(physeq_object, step = 10, label = NULL, color = NULL, plot = 
                        #size = 4, hjust = 0)
   #}
 
-  p <- p + ggplot2::geom_line(ggplot2::aes_string(),position=position_dodge(width=0.2),size=1)
+  p <- p + ggplot2::geom_line(ggplot2::aes_string(),size=1)
   if (se) { ## add standard error if available
     p <- p +
       ggplot2::geom_ribbon(ggplot2::aes_string(ymin = ".S - .se",
